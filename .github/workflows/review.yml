@@ -1,0 +1,16 @@
+name: Code Review
+
+on: [push]
+
+jobs:
+  code_review_job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Run Code Review
+      run: echo "Running code review..."
+    - name: Run a one-line script
+      uses: ./
+      with:
+        who-togreet: "i am jaja"
