@@ -7,51 +7,55 @@ import * as github from '@actions/github'
  */
 export async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
+    const token = core.getInput("GITHUB_TOKEN");
+    if (!token) {
+      throw new Error("GITHUB_TOKEN is required.");
+    }
 
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    // core.debug(`Waiting ${ms} milliseconds ...`)
-
-    // // Log the current timestamp, wait, then log the new timestamp
-    // core.debug(new Date().toTimeString())
-    // await wait(parseInt(ms, 10))
-    // core.debug(new Date().toTimeString())
-
-    // // Set outputs for other workflow steps to use
-    // core.setOutput('time', new Date().toTimeString())
-
-   
-    core.debug(" Test  12345678 ");
-    console.log(" Test for console log ");
-
+    const octokit = github.getOctokit(token);
     const context = github.context;
-    // 確保當前事件是 `push`
+
+    // 確保事件是 `push`
     if (context.eventName !== "push") {
       core.setFailed("This action only works with push events.");
       return;
     }
-    // 獲取最新 Commit 信息
+
+    // 獲取最新的 Commit 信息
     const headCommit = context.payload.head_commit;
-    
-    console.log("Latest Commit: " + headCommit);
-
-    core.debug("Latest Commit: " + headCommit);
-
-    if (headCommit && headCommit.id) {
-      core.debug("Commit SHA: " + headCommit.id);
-      core.debug("Commit Message: " + headCommit.message);
-
-      console.log("Commit Message: " + headCommit.message);
-      console.log("Commit Message: " + headCommit.commit.context);
-    } else {
+    if (!headCommit) {
       core.setFailed("No commit found in the payload.");
+      console.log("No commit found in the payload.")
+      return;
     }
 
+    console.log(`Commit Message: ${headCommit.message}`);
 
+    core.info(`Latest Commit SHA: ${headCommit.id}`);
+    core.info(`Commit Message: ${headCommit.message}`);
 
+    // 獲取倉庫和最新 Commit SHA
+    const { owner, repo } = context.repo;
+    const ref = context.payload.after;
 
+    // 獲取特定文件的內容
+    const filePath = "README.md"; // 替換為需要檢查的文件路徑
+    const response = await octokit.rest.repos.getContent({
+      owner,
+      repo,
+      path: filePath,
+      ref,
+    });
+
+    if ("content" in response.data) {
+      const content = Buffer.from(response.data.content, "base64").toString("utf8");
+      core.info(`Content of ${filePath}:\n${content}`);
+
+      console.log(`Content of ${filePath}:\n${content}`);
+    } else {
+      core.warning(`File ${filePath} is a directory or does not exist.`);
+    }
   } catch (error) {
-    // Fail the workflow run if an error occurs
-    if (error instanceof Error) core.setFailed(error.message)
+    core.setFailed(`Action failed with error: ${error instanceof Error ? error.message : error}`);
   }
 }
