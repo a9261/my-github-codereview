@@ -7,7 +7,7 @@ import * as github from '@actions/github'
  */
 export async function run(): Promise<void> {
   try {
-    const token = core.getInput("GITHUB_TOKEN");
+    const token = core.getInput("HUB_TOKEN");
     if (!token) {
       throw new Error("GITHUB_TOKEN is required.");
     }
