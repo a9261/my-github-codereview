@@ -22,6 +22,7 @@ export async function run(): Promise<void> {
 
    
     core.debug(" Test  12345678 ");
+    console.log(" Test for console log ");
 
     const context = github.context;
     // 確保當前事件是 `push`
@@ -31,11 +32,17 @@ export async function run(): Promise<void> {
     }
     // 獲取最新 Commit 信息
     const headCommit = context.payload.head_commit;
+    
+    console.log("Latest Commit: " + headCommit);
+
     core.debug("Latest Commit: " + headCommit);
 
     if (headCommit && headCommit.id) {
       core.debug("Commit SHA: " + headCommit.id);
       core.debug("Commit Message: " + headCommit.message);
+
+      console.log("Commit Message: " + headCommit.message);
+      console.log("Commit Message: " + headCommit.commit.context);
     } else {
       core.setFailed("No commit found in the payload.");
     }
