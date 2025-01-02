@@ -39,6 +39,15 @@ export async function run(): Promise<void> {
     const { owner, repo } = context.repo;
     const ref = context.payload.after;
 
+    //Get All of Content
+    //octokit.rest.codesOfConduct.getAllCodesOfConduct();
+   const allResponse = await octokit.rest.codesOfConduct.getAllCodesOfConduct();
+
+   
+    
+    console.log(`Content of allResponse ---` + allResponse.data );
+  
+
     // 獲取特定文件的內容
     const filePath = "README.md"; // 替換為需要檢查的文件路徑
     const response = await octokit.rest.repos.getContent({
