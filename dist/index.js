@@ -29976,8 +29976,8 @@ async function run() {
         const allResponse = await octokit.rest.codesOfConduct.getAllCodesOfConduct();
         // 處理回傳的資料
         const codesOfConduct = allResponse.data;
-        console.log(`consoleLog Content of allResponse ---` + codesOfConduct);
-        core.info(`coreInfo Content of allResponse ---` + codesOfConduct);
+        console.log(`consoleLog Content of allResponse ---` + JSON.stringify(codesOfConduct));
+        core.info(`coreInfo Content of allResponse ---` + JSON.stringify(codesOfConduct));
         // // 獲取特定文件的內容
         // const filePath = "README.md"; // 替換為需要檢查的文件路徑
         // const response = await octokit.rest.repos.getContent({
