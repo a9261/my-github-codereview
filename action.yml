@@ -15,7 +15,7 @@ inputs:
     default: '1000'
   token:
     description: 'Your GITHUB_TOKEN'
-    default: ${{ secrets.TOKEN }}
+    default: ${{ github.token }}
     required: false
 # Define your outputs here.
 outputs:
