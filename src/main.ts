@@ -1,5 +1,4 @@
 import * as core from '@actions/core'
-import { wait } from './wait'
 import * as github from '@actions/github'
 /**
  * The main function for the action.
@@ -7,10 +6,12 @@ import * as github from '@actions/github'
  */
 export async function run(): Promise<void> {
   try {
-    const token = core.getInput("HUB_TOKEN");
+    const token = core.getInput("token");
+    console.log("getInput  " + token);
     if (!token) {
       throw new Error("GITHUB_TOKEN is required.");
     }
+   
 
     const octokit = github.getOctokit(token);
     const context = github.context;

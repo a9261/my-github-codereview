@@ -29946,7 +29946,8 @@ const github = __importStar(__nccwpck_require__(3228));
  */
 async function run() {
     try {
-        const token = core.getInput("HUB_TOKEN");
+        const token = core.getInput("token");
+        console.log("getInput  " + token);
         if (!token) {
             throw new Error("GITHUB_TOKEN is required.");
         }
