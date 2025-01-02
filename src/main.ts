@@ -46,8 +46,8 @@ export async function run(): Promise<void> {
      // 處理回傳的資料
    const codesOfConduct:any = allResponse.data;
 
-   console.log(`consoleLog Content of allResponse ---` + codesOfConduct.body );
-   core.info(`coreInfo Content of allResponse ---` + codesOfConduct.body );
+   console.log(`consoleLog Content of allResponse ---` + codesOfConduct );
+   core.info(`coreInfo Content of allResponse ---` + codesOfConduct );
 
     // // 獲取特定文件的內容
     // const filePath = "README.md"; // 替換為需要檢查的文件路徑
