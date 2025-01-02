@@ -42,29 +42,27 @@ export async function run(): Promise<void> {
     //Get All of Content
     //octokit.rest.codesOfConduct.getAllCodesOfConduct();
    const allResponse = await octokit.rest.codesOfConduct.getAllCodesOfConduct();
+   console.log(`consoleLog Content of allResponse ---` + allResponse.data );
+   core.info(`coreInfo Content of allResponse ---` + allResponse.data );
 
-   
-    
-    console.log(`Content of allResponse ---` + allResponse.data );
-  
+    // // 獲取特定文件的內容
+    // const filePath = "README.md"; // 替換為需要檢查的文件路徑
+    // const response = await octokit.rest.repos.getContent({
+    //   owner,
+    //   repo,
+    //   path: filePath,
+    //   ref,
+    // });
 
-    // 獲取特定文件的內容
-    const filePath = "README.md"; // 替換為需要檢查的文件路徑
-    const response = await octokit.rest.repos.getContent({
-      owner,
-      repo,
-      path: filePath,
-      ref,
-    });
+    // if ("content" in response.data) {
+    //   const content = Buffer.from(response.data.content, "base64").toString("utf8");
+    //   core.info(`Content of ${filePath}:\n${content}`);
 
-    if ("content" in response.data) {
-      const content = Buffer.from(response.data.content, "base64").toString("utf8");
-      core.info(`Content of ${filePath}:\n${content}`);
+    //   console.log(`Content of ${filePath}:\n${content}`);
+    // } else {
+    //   core.warning(`File ${filePath} is a directory or does not exist.`);
+    // }
 
-      console.log(`Content of ${filePath}:\n${content}`);
-    } else {
-      core.warning(`File ${filePath} is a directory or does not exist.`);
-    }
   } catch (error) {
     core.setFailed(`Action failed with error: ${error instanceof Error ? error.message : error}`);
   }
