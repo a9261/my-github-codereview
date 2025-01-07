@@ -35667,11 +35667,14 @@ const openai_1 = __importDefault(__nccwpck_require__(2583));
 async function run() {
     try {
         const token = core.getInput("token");
-        const openapiKey = core.getInput("openai_api_key");
+        const openapiKey = core.getInput("openaikey");
         let prompt = core.getInput("prompt");
         let commentLng = core.getInput("commentLng");
         let programLng = core.getInput("programLng");
         let chatgptModel = core.getInput("chatgpt_model");
+        if (!openapiKey) {
+            console.log("openaikey is required.");
+        }
         if (!chatgptModel) {
             chatgptModel = "gpt-4o";
         }
@@ -35722,7 +35725,7 @@ async function run() {
                 console.log(`File: ${file.filename}`);
                 console.log(`異動內容: ${file.patch}`);
                 const client = new openai_1.default({
-                    apiKey: openapiKey, // This is the default and can be omitted
+                    apiKey: openapiKey,
                 });
                 const initCompletion = await client.chat.completions.create({
                     model: chatgptModel,

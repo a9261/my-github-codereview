@@ -10,12 +10,12 @@ branding:
 # Define your inputs here.
 inputs:
   token:
-    description: 'Your GITHUB_TOKEN'
+    description: 'Your GITHUB TOKEN'
     default: ${{ github.token }}
     required: false
-  openai_api_key:
-    description: 'Your open_api_TOKEN'
-    default: ${{ github.openai_api_key }}
+  openaikey:
+    description: 'Your OPENAPI KEY'
+    default: ${{ github.openaikey }}
     required: false
   prompt:
     description: 'Your prompt of codereview'
