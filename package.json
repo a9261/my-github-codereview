@@ -61,7 +61,8 @@
   "dependencies": {
     "@actions/core": "^1.11.1",
     "@actions/github": "^6.0.0",
-    "@octokit/core": "^6.1.2"
+    "@octokit/core": "^6.1.2",
+    "openai": "^4.77.3"
   },
   "devDependencies": {
     "@github/local-action": "^2.2.1",

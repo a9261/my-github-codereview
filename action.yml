@@ -9,14 +9,22 @@ branding:
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
-    required: true
-    default: '1000'
   token:
     description: 'Your GITHUB_TOKEN'
     default: ${{ github.token }}
     required: false
+  openai_api_key:
+    description: 'Your open_api_TOKEN'
+    default: ${{ github.openai_api_key }}
+    required: false
+  prompt:
+    description: 'Your prompt of codereview'
+    default: ${{ github.prompt }}
+    required: false
+  commentLng:
+    description: 'Your code review result of comment language'
+    default: ${{ github.commentLng }}
+    required: false  
 # Define your outputs here.
 outputs:
   time:

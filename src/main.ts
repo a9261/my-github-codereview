@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
+import OpenAI from 'openai';
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
@@ -7,12 +8,36 @@ import * as github from '@actions/github'
 export async function run(): Promise<void> {
   try {
     const token = core.getInput("token");
-    console.log("getInput  " + token);
+    const openapiKey = core.getInput("openai_api_key");
+    let prompt = core.getInput("prompt");
+    let commentLng = core.getInput("commentLng");
+    let programLng = core.getInput("programLng");
+    let chatgptModel = core.getInput("chatgpt_model");
+
+    if (!chatgptModel) {
+      chatgptModel = "gpt-4o";
+    }
+    if (!commentLng) {
+      commentLng = "中文";
+    }
+    if (!programLng) {
+      programLng = "C#";
+    }
+
+    if (!prompt) {
+      prompt = `You are a professional ${programLng} programer , let me know how can i efficiently change a code.
+      Please review it with a focus on:
+      1. Potential security issues (e.g., SQL injection, XSS, or session handling).
+      2. Performance bottlenecks or unnecessary complexity.
+      3. Adherence to common ${programLng} best practices.
+      4. Overall code maintainability and readability.
+      finlly please givme review in ${commentLng} language.
+      `;
+    }
+
     if (!token) {
       throw new Error("GITHUB_TOKEN is required.");
     }
-
-
     const octokit = github.getOctokit(token);
     const context = github.context;
 
@@ -30,29 +55,48 @@ export async function run(): Promise<void> {
       return;
     }
 
-    console.log(`Commit Message: ${headCommit.message}`);
-
-    core.info(`Latest Commit SHA: ${headCommit.id}`);
-    core.info(`Commit Message: ${headCommit.message}`);
-
+    //console.log(`Commit Message: ${headCommit.message}`);
     // 獲取倉庫和最新 Commit SHA
     const { owner, repo } = context.repo;
     const ref = context.payload.after;
-
 
     var commit: any = await octokit.rest.repos.getCommit({
       owner,
       repo,
       ref
     });
-
-    // console.log(JSON.stringify(commit.data.files));
-    // console.log(JSON.stringify(commit.data));
-
-    commit.data.files.forEach((file: any) => {
+    commit.data.files.forEach(async (file: any) => {
       if (file.filename.indexOf("dist/") == -1) {
         console.log(`File: ${file.filename}`);
         console.log(`異動內容: ${file.patch}`);
+
+        const client = new OpenAI({
+          apiKey: openapiKey, // This is the default and can be omitted
+        });
+        const initCompletion = await client.chat.completions.create({
+          model: chatgptModel,
+          messages: [
+            { role: "developer", content: prompt },
+            {
+              role: "user",
+              content: file.patch,
+            },
+          ],
+        });
+
+        console.log(initCompletion.choices[0]!.message?.content);
+
+        // const commetCompletion = await client.chat.completions.create({
+        //   model: "gpt-4o",
+        //   messages: [
+        //     { role: "developer", content: "You are a helpful assistant." },
+        //     {
+        //       role: "user",
+        //       content: "Write a haiku about recursion in programming.",
+        //     },
+        //   ],
+        // });
+
       }
     });
 
