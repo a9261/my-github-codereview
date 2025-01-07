@@ -35672,6 +35672,9 @@ async function run() {
         let commentLng = core.getInput("commentlng");
         let programLng = core.getInput("programlng");
         let chatgptModel = core.getInput("chatgptmodel");
+        if (!token) {
+            throw new Error("GITHUB_TOKEN is required.");
+        }
         if (!openapiKey) {
             console.log("openaikey is required.");
             throw new Error("openaikey is required.");
@@ -35694,9 +35697,6 @@ async function run() {
       4. Overall code maintainability and readability.
       finlly please givme review in ${commentLng} language.
       `;
-        }
-        if (!token) {
-            throw new Error("GITHUB_TOKEN is required.");
         }
         const octokit = github.getOctokit(token);
         const context = github.context;

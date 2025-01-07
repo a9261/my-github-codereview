@@ -13,4 +13,9 @@ jobs:
     - name: Run a one-line script
       uses: ./
       with:
-        who-togreet: "i am jaja"
+        token: ${{ secrets.token }}
+        openaikey: ${{ secrets.openaikey }}
+        prompt: ${{ secrets.prompt }}
+        commentlng: ${{ secrets.commentlng }}
+        programlng: ${{ secrets.programlng }}
+        chatgptmodel: ${{ secrets.chatgptmodel }}
