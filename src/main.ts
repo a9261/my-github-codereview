@@ -10,12 +10,13 @@ export async function run(): Promise<void> {
     const token = core.getInput("token");
     const openapiKey = core.getInput("openaikey");
     let prompt = core.getInput("prompt");
-    let commentLng = core.getInput("commentLng");
-    let programLng = core.getInput("programLng");
-    let chatgptModel = core.getInput("chatgpt_model");
+    let commentLng = core.getInput("commentlng");
+    let programLng = core.getInput("programlng");
+    let chatgptModel = core.getInput("chatgptmodel");
 
     if (!openapiKey) {
       console.log("openaikey is required.");
+      throw new Error("openaikey is required.");
     }
 
     if (!chatgptModel) {
@@ -27,6 +28,7 @@ export async function run(): Promise<void> {
     if (!programLng) {
       programLng = "C#";
     }
+
 
     if (!prompt) {
       prompt = `You are a professional ${programLng} programer , let me know how can i efficiently change a code.

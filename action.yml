@@ -21,9 +21,17 @@ inputs:
     description: 'Your prompt of codereview'
     default: ${{ github.prompt }}
     required: false
-  commentLng:
+  commentlng:
     description: 'Your code review result of comment language'
-    default: ${{ github.commentLng }}
+    default: ${{ github.commentlng }}
+    required: false  
+  programlng:
+    description: 'Your reponsitory main program language'
+    default: ${{ github.programlng }}
+    required: false  
+  chatgptmodel:
+    description: 'You want to use which model of chatgpt'
+    default: ${{ github.commentlng }}
     required: false  
 # Define your outputs here.
 outputs:
