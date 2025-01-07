@@ -29976,14 +29976,13 @@ async function run() {
             repo,
             ref
         });
-        console.log(JSON.stringify(commit.data.files));
-        console.log(JSON.stringify(commit.data));
+        // console.log(JSON.stringify(commit.data.files));
+        // console.log(JSON.stringify(commit.data));
         commit.data.files.forEach((file) => {
-            console.log(`File: ${file.filename}`);
-            console.log(`Status: ${file.status}`);
-            console.log(`Additions: ${file.additions}`);
-            console.log(`Deletions: ${file.deletions}`);
-            console.log(`Changes: ${file.changes}`);
+            if (file.filename.indexOf("dist/") == -1) {
+                console.log(`File: ${file.filename}`);
+                console.log(`異動內容: ${file.patch}`);
+            }
         });
         // // 獲取特定文件的內容
         // const filePath = "README.md"; // 替換為需要檢查的文件路徑
