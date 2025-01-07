@@ -29971,13 +29971,20 @@ async function run() {
         // 獲取倉庫和最新 Commit SHA
         const { owner, repo } = context.repo;
         const ref = context.payload.after;
-        //Get All of Content
-        //octokit.rest.codesOfConduct.getAllCodesOfConduct();
-        const allResponse = await octokit.rest.codesOfConduct.getAllCodesOfConduct();
-        // 處理回傳的資料
-        const codesOfConduct = allResponse.data;
-        console.log(`consoleLog Content of allResponse ---` + JSON.stringify(codesOfConduct));
-        core.info(`coreInfo Content of allResponse ---` + JSON.stringify(codesOfConduct));
+        var commit = await octokit.rest.repos.getCommit({
+            owner,
+            repo,
+            ref
+        });
+        console.log(JSON.stringify(commit.data.files));
+        console.log(JSON.stringify(commit.data));
+        commit.data.files.forEach((file) => {
+            console.log(`File: ${file.filename}`);
+            console.log(`Status: ${file.status}`);
+            console.log(`Additions: ${file.additions}`);
+            console.log(`Deletions: ${file.deletions}`);
+            console.log(`Changes: ${file.changes}`);
+        });
         // // 獲取特定文件的內容
         // const filePath = "README.md"; // 替換為需要檢查的文件路徑
         // const response = await octokit.rest.repos.getContent({
