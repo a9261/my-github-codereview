@@ -35738,7 +35738,14 @@ async function run() {
                         },
                     ],
                 });
-                console.log(initCompletion.choices[0].message?.content);
+                let gptComment = initCompletion.choices[0].message?.content;
+                // console.log(initCompletion.choices[0]!.message?.content);
+                octokit.rest.repos.createCommitComment({
+                    owner: owner,
+                    repo: repo,
+                    commit_sha: headCommit.id,
+                    body: gptComment ?? ""
+                });
                 // const commetCompletion = await client.chat.completions.create({
                 //   model: "gpt-4o",
                 //   messages: [

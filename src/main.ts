@@ -73,6 +73,7 @@ export async function run(): Promise<void> {
       repo,
       ref
     });
+
     commit.data.files.forEach(async (file: any) => {
       if (file.filename.indexOf("dist/") == -1) {
         console.log(`File: ${file.filename}`);
@@ -92,7 +93,15 @@ export async function run(): Promise<void> {
           ],
         });
 
-        console.log(initCompletion.choices[0]!.message?.content);
+        let gptComment= initCompletion.choices[0]!.message?.content;
+       // console.log(initCompletion.choices[0]!.message?.content);
+        octokit.rest.repos.createCommitComment({
+          owner : owner,
+          repo : repo,
+          commit_sha : headCommit.id,
+          body:gptComment ?? ""
+        });
+
 
         // const commetCompletion = await client.chat.completions.create({
         //   model: "gpt-4o",
