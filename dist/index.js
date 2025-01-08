@@ -35726,7 +35726,7 @@ async function run() {
             repo,
             ref
         });
-        commit.data.files.forEach(async (file) => {
+        for (const file of commit.data.files) {
             if (file.filename.indexOf("dist/") == -1) {
                 //console.log(`File: ${file.filename}`);
                 //console.log(`異動內容: ${file.patch}`);
@@ -35752,7 +35752,7 @@ async function run() {
                     body: gptComment ?? ""
                 });
             }
-        });
+        }
     }
     catch (error) {
         core.setFailed(`Action failed with error: ${error instanceof Error ? error.message : error}`);

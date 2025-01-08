@@ -80,11 +80,10 @@ export async function run(): Promise<void> {
       ref
     });
 
-    commit.data.files.forEach(async (file: any) => {
+    for(const file of commit.data.files){
       if (file.filename.indexOf("dist/") == -1) {
         //console.log(`File: ${file.filename}`);
         //console.log(`異動內容: ${file.patch}`);
-
         const client = new OpenAI({
           apiKey: openapiKey,
         });
@@ -108,7 +107,9 @@ export async function run(): Promise<void> {
           body:gptComment ?? ""
         });
       }
-    });
+    }
+
+    
 
   } catch (error) {
     core.setFailed(`Action failed with error: ${error instanceof Error ? error.message : error}`);
