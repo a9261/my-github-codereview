@@ -35749,7 +35749,7 @@ async function run() {
                     owner: owner,
                     repo: repo,
                     commit_sha: headCommit.id,
-                    body: gptComment ?? ""
+                    body: "檔名：" + file.filename + "_____" + (gptComment ?? "")
                 });
             }
         }
