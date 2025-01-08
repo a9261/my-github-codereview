@@ -35688,6 +35688,10 @@ async function run() {
         if (!programLng) {
             programLng = "C#";
         }
+        console.log("parameter chatgptModel " + chatgptModel);
+        console.log("parameter commentLng " + commentLng);
+        console.log("parameter programLng " + programLng);
+        console.log("parameter prompt " + prompt);
         if (!prompt) {
             prompt = `You are a professional ${programLng} programer , let me know how can i efficiently change a code.
       Please review it with a focus on:
@@ -35695,7 +35699,7 @@ async function run() {
       2. Performance bottlenecks or unnecessary complexity.
       3. Adherence to common ${programLng} best practices.
       4. Overall code maintainability and readability.
-      finlly please givme review in ${commentLng} language.
+      finlly please givme response only use ${commentLng} language.
       `;
         }
         const octokit = github.getOctokit(token);
@@ -35713,6 +35717,7 @@ async function run() {
             return;
         }
         //console.log(`Commit Message: ${headCommit.message}`);
+        //console.log(`Commit SHA: ${headCommit.id}`);
         // 獲取倉庫和最新 Commit SHA
         const { owner, repo } = context.repo;
         const ref = context.payload.after;
@@ -35723,8 +35728,8 @@ async function run() {
         });
         commit.data.files.forEach(async (file) => {
             if (file.filename.indexOf("dist/") == -1) {
-                console.log(`File: ${file.filename}`);
-                console.log(`異動內容: ${file.patch}`);
+                //console.log(`File: ${file.filename}`);
+                //console.log(`異動內容: ${file.patch}`);
                 const client = new openai_1.default({
                     apiKey: openapiKey,
                 });
@@ -35746,33 +35751,8 @@ async function run() {
                     commit_sha: headCommit.id,
                     body: gptComment ?? ""
                 });
-                // const commetCompletion = await client.chat.completions.create({
-                //   model: "gpt-4o",
-                //   messages: [
-                //     { role: "developer", content: "You are a helpful assistant." },
-                //     {
-                //       role: "user",
-                //       content: "Write a haiku about recursion in programming.",
-                //     },
-                //   ],
-                // });
             }
         });
-        // // 獲取特定文件的內容
-        // const filePath = "README.md"; // 替換為需要檢查的文件路徑
-        // const response = await octokit.rest.repos.getContent({
-        //   owner,
-        //   repo,
-        //   path: filePath,
-        //   ref,
-        // });
-        // if ("content" in response.data) {
-        //   const content = Buffer.from(response.data.content, "base64").toString("utf8");
-        //   core.info(`Content of ${filePath}:\n${content}`);
-        //   console.log(`Content of ${filePath}:\n${content}`);
-        // } else {
-        //   core.warning(`File ${filePath} is a directory or does not exist.`);
-        // }
     }
     catch (error) {
         core.setFailed(`Action failed with error: ${error instanceof Error ? error.message : error}`);
