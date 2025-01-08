@@ -1,5 +1,13 @@
-#This is my github codereview action
+This is my github codereview action
 
-#Copy from github action typescript template
+Copy from github action typescript template
 
-Test Of Read commit test 2123
+You can setting your own parameter in your workflow
+
+      with:
+        token: ${{ secrets.token }}
+        openaikey: ${{ secrets.openaikey }}
+        prompt: ${{ secrets.prompt }}
+        commentlng: ${{ secrets.commentlng }}
+        programlng: ${{ secrets.programlng }}
+        chatgptmodel: ${{ secrets.chatgptmodel }}
